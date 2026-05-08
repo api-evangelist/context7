@@ -36,6 +36,8 @@ apis:
         type: Documentation
       - url: https://context7.com/docs/llms.txt
         type: LLMsTxt
+      - url: openapi/context7-openapi.yml
+        type: OpenAPI
     description: >-
       The Context7 REST API exposes endpoints for searching libraries,
       retrieving documentation context for LLMs, refreshing indexed sources,

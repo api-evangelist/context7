@@ -1,0 +1,214 @@
+openapi: 3.1.0
+info:
+  title: Context7 REST API
+  version: '1.0'
+  description: >-
+    REST endpoints for searching libraries, retrieving documentation
+    snippets for LLMs, refreshing indexed sources, managing teamspace
+    policies, and submitting new sources (GitHub repos, OpenAPI specs,
+    llms.txt files, websites, Confluence spaces) to Context7.
+  x-generated-from: https://context7.com/docs/api-guide
+  x-generated-by: claude-crawl-2026-05-08
+servers:
+  - url: https://context7.com/api
+    description: Context7 API
+security:
+  - BearerAuth: []
+paths:
+  /v2/libs/search:
+    get:
+      summary: Search libraries
+      operationId: searchLibraries
+      parameters:
+        - name: query
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+  /v2/context:
+    get:
+      summary: Retrieve documentation snippets for a library
+      operationId: getContext
+      parameters:
+        - name: libraryId
+          in: query
+          schema:
+            type: string
+        - name: query
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Documentation snippets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+  /v1/refresh:
+    post:
+      summary: Refresh a library's documentation
+      operationId: refreshLibrary
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: Refresh accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+  /v2/policies:
+    get:
+      summary: Get teamspace policy configuration
+      operationId: getPolicies
+      responses:
+        '200':
+          description: Policy configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+    patch:
+      summary: Update teamspace policies
+      operationId: updatePolicies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: Updated policy configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+  /v2/add/repo/{provider}:
+    post:
+      summary: Submit a repository for processing
+      operationId: addRepo
+      parameters:
+        - name: provider
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: Submission result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+  /v2/add/openapi:
+    post:
+      summary: Submit an OpenAPI specification
+      operationId: addOpenApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: Submission result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+  /v2/add/openapi-upload:
+    post:
+      summary: Upload an OpenAPI specification file
+      operationId: uploadOpenApi
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: Upload result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+  /v2/add/llmstxt:
+    post:
+      summary: Submit an llms.txt file
+      operationId: addLlmsTxt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: Submission result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+  /v2/add/website:
+    post:
+      summary: Submit a website for crawling
+      operationId: addWebsite
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: Submission result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+  /v2/add/confluence:
+    post:
+      summary: Submit a Confluence space
+      operationId: addConfluence
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: Submission result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Resource:
+      type: object
+      additionalProperties: true
