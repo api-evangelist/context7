@@ -104,6 +104,10 @@ common:
   - type: Pricing
     url: https://context7.com/pricing
 
+  - type: Integrations
+    url: https://context7.com/integrations
+integrations:
+  - name: Context7
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
