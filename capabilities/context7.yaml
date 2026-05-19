@@ -1,0 +1,490 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Context7 REST API
+  description: 'Context7 REST API. 11 operations. Lead operation: Refresh a library''s documentation. Self-contained Naftiko
+    capability covering one Context7 business surface.'
+  tags:
+  - Context7
+  - Context7 REST API
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    CONTEXT7_API_KEY: CONTEXT7_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: context7
+    baseUri: https://context7.com/api
+    description: Context7 REST API business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-refresh
+      path: /v1/refresh
+      operations:
+      - name: refreshlibrary
+        method: POST
+        description: Refresh a library's documentation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-add-confluence
+      path: /v2/add/confluence
+      operations:
+      - name: addconfluence
+        method: POST
+        description: Submit a Confluence space
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-add-llmstxt
+      path: /v2/add/llmstxt
+      operations:
+      - name: addllmstxt
+        method: POST
+        description: Submit an llms.txt file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-add-openapi
+      path: /v2/add/openapi
+      operations:
+      - name: addopenapi
+        method: POST
+        description: Submit an OpenAPI specification
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-add-openapi-upload
+      path: /v2/add/openapi-upload
+      operations:
+      - name: uploadopenapi
+        method: POST
+        description: Upload an OpenAPI specification file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-add-repo-provider
+      path: /v2/add/repo/{provider}
+      operations:
+      - name: addrepo
+        method: POST
+        description: Submit a repository for processing
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: provider
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-add-website
+      path: /v2/add/website
+      operations:
+      - name: addwebsite
+        method: POST
+        description: Submit a website for crawling
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-context
+      path: /v2/context
+      operations:
+      - name: getcontext
+        method: GET
+        description: Retrieve documentation snippets for a library
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: libraryId
+          in: query
+          type: string
+        - name: query
+          in: query
+          type: string
+    - name: v2-libs-search
+      path: /v2/libs/search
+      operations:
+      - name: searchlibraries
+        method: GET
+        description: Search libraries
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query
+          in: query
+          type: string
+    - name: v2-policies
+      path: /v2/policies
+      operations:
+      - name: getpolicies
+        method: GET
+        description: Get teamspace policy configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatepolicies
+        method: PATCH
+        description: Update teamspace policies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.CONTEXT7_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: context7-rest
+    port: 8080
+    description: REST adapter for Context7 REST API. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/v1/refresh
+      name: v1-refresh
+      description: REST surface for v1-refresh.
+      operations:
+      - method: POST
+        name: refreshlibrary
+        description: Refresh a library's documentation
+        call: context7.refreshlibrary
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/add/confluence
+      name: v2-add-confluence
+      description: REST surface for v2-add-confluence.
+      operations:
+      - method: POST
+        name: addconfluence
+        description: Submit a Confluence space
+        call: context7.addconfluence
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/add/llmstxt
+      name: v2-add-llmstxt
+      description: REST surface for v2-add-llmstxt.
+      operations:
+      - method: POST
+        name: addllmstxt
+        description: Submit an llms.txt file
+        call: context7.addllmstxt
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/add/openapi
+      name: v2-add-openapi
+      description: REST surface for v2-add-openapi.
+      operations:
+      - method: POST
+        name: addopenapi
+        description: Submit an OpenAPI specification
+        call: context7.addopenapi
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/add/openapi-upload
+      name: v2-add-openapi-upload
+      description: REST surface for v2-add-openapi-upload.
+      operations:
+      - method: POST
+        name: uploadopenapi
+        description: Upload an OpenAPI specification file
+        call: context7.uploadopenapi
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/add/repo/{provider}
+      name: v2-add-repo-provider
+      description: REST surface for v2-add-repo-provider.
+      operations:
+      - method: POST
+        name: addrepo
+        description: Submit a repository for processing
+        call: context7.addrepo
+        with:
+          provider: rest.provider
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/add/website
+      name: v2-add-website
+      description: REST surface for v2-add-website.
+      operations:
+      - method: POST
+        name: addwebsite
+        description: Submit a website for crawling
+        call: context7.addwebsite
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/context
+      name: v2-context
+      description: REST surface for v2-context.
+      operations:
+      - method: GET
+        name: getcontext
+        description: Retrieve documentation snippets for a library
+        call: context7.getcontext
+        with:
+          libraryId: rest.libraryId
+          query: rest.query
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/libs/search
+      name: v2-libs-search
+      description: REST surface for v2-libs-search.
+      operations:
+      - method: GET
+        name: searchlibraries
+        description: Search libraries
+        call: context7.searchlibraries
+        with:
+          query: rest.query
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/policies
+      name: v2-policies
+      description: REST surface for v2-policies.
+      operations:
+      - method: GET
+        name: getpolicies
+        description: Get teamspace policy configuration
+        call: context7.getpolicies
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updatepolicies
+        description: Update teamspace policies
+        call: context7.updatepolicies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: context7-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Context7 REST API. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: refresh-library-s-documentation
+      description: Refresh a library's documentation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: context7.refreshlibrary
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: submit-confluence-space
+      description: Submit a Confluence space
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: context7.addconfluence
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: submit-llms-txt-file
+      description: Submit an llms.txt file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: context7.addllmstxt
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: submit-openapi-specification
+      description: Submit an OpenAPI specification
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: context7.addopenapi
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: upload-openapi-specification-file
+      description: Upload an OpenAPI specification file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: context7.uploadopenapi
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: submit-repository-processing
+      description: Submit a repository for processing
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: context7.addrepo
+      with:
+        provider: tools.provider
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: submit-website-crawling
+      description: Submit a website for crawling
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: context7.addwebsite
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-documentation-snippets-library
+      description: Retrieve documentation snippets for a library
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: context7.getcontext
+      with:
+        libraryId: tools.libraryId
+        query: tools.query
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: search-libraries
+      description: Search libraries
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: context7.searchlibraries
+      with:
+        query: tools.query
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-teamspace-policy-configuration
+      description: Get teamspace policy configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: context7.getpolicies
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-teamspace-policies
+      description: Update teamspace policies
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: context7.updatepolicies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
