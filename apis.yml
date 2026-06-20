@@ -8,7 +8,7 @@ description: >-
 kind: contract
 position: Consuming
 access: 3rd-Party
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - AI
   - Context
@@ -26,7 +26,7 @@ apis:
       - LLM
       - REST
       - Search
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://context7.com/api
     humanURL: https://context7.com/docs/api-guide
     properties:
@@ -48,7 +48,7 @@ apis:
       - Context
       - LLM
       - MCP
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://mcp.context7.com/mcp
     humanURL: https://github.com/upstash/context7
     properties:
@@ -67,7 +67,7 @@ apis:
       - CLI
       - Documentation
       - Tooling
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://github.com/upstash/context7
     properties:
       - url: https://github.com/upstash/context7
