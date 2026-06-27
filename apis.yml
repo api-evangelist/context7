@@ -33,7 +33,7 @@ apis:
       - url: https://context7.com/docs/api-guide
         type: Documentation
       - url: https://context7.com/docs/llms.txt
-        type: LLMsTxt
+        type: LlmsText
       - url: openapi/context7-openapi.yml
         type: OpenAPI
     description: >-
