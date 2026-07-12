@@ -79,6 +79,12 @@ apis:
       library for searching the catalog by library name and ctx7 docs for retrieving documentation using a
       Context7-compatible library ID, useful for scripting and local developer workflows.
 common:
+  - type: VulnerabilityDisclosure
+    url: security/context7-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/context7-domain-security.yml
+  - type: Authentication
+    url: authentication/context7-authentication.yml
   - type: Website
     url: https://context7.com/
   - type: Documentation
