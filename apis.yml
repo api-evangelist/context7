@@ -79,6 +79,8 @@ apis:
       library for searching the catalog by library name and ctx7 docs for retrieving documentation using a
       Context7-compatible library ID, useful for scripting and local developer workflows.
 common:
+  - type: AgenticAccess
+    url: agentic-access/context7-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/context7-vulnerability-disclosure.yml
   - type: DomainSecurity
