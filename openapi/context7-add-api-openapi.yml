@@ -1,110 +1,28 @@
 openapi: 3.1.0
 info:
-  title: Context7 REST API
+  title: Context7 REST Add API
   version: '1.0'
-  description: >-
-    REST endpoints for searching libraries, retrieving documentation
-    snippets for LLMs, refreshing indexed sources, managing teamspace
-    policies, and submitting new sources (GitHub repos, OpenAPI specs,
-    llms.txt files, websites, Confluence spaces) to Context7.
+  description: REST endpoints for searching libraries, retrieving documentation snippets for LLMs, refreshing indexed sources, managing teamspace policies, and submitting new sources (GitHub repos, OpenAPI specs, llms.txt files, websites, Confluence spaces) to Context7.
   x-generated-from: https://context7.com/docs/api-guide
   x-generated-by: claude-crawl-2026-05-08
 servers:
-  - url: https://context7.com/api
-    description: Context7 API
+- url: https://context7.com/api
+  description: Context7 API
 security:
-  - BearerAuth: []
+- BearerAuth: []
+tags:
+- name: Add
 paths:
-  /v2/libs/search:
-    get:
-      summary: Search libraries
-      operationId: searchLibraries
-      parameters:
-        - name: query
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Search results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Resource'
-  /v2/context:
-    get:
-      summary: Retrieve documentation snippets for a library
-      operationId: getContext
-      parameters:
-        - name: libraryId
-          in: query
-          schema:
-            type: string
-        - name: query
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Documentation snippets
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Resource'
-  /v1/refresh:
-    post:
-      summary: Refresh a library's documentation
-      operationId: refreshLibrary
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Resource'
-      responses:
-        '200':
-          description: Refresh accepted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Resource'
-  /v2/policies:
-    get:
-      summary: Get teamspace policy configuration
-      operationId: getPolicies
-      responses:
-        '200':
-          description: Policy configuration
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Resource'
-    patch:
-      summary: Update teamspace policies
-      operationId: updatePolicies
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Resource'
-      responses:
-        '200':
-          description: Updated policy configuration
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Resource'
   /v2/add/repo/{provider}:
     post:
       summary: Submit a repository for processing
       operationId: addRepo
       parameters:
-        - name: provider
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: provider
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -118,6 +36,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Resource'
+      tags:
+      - Add
   /v2/add/openapi:
     post:
       summary: Submit an OpenAPI specification
@@ -135,6 +55,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Resource'
+      tags:
+      - Add
   /v2/add/openapi-upload:
     post:
       summary: Upload an OpenAPI specification file
@@ -152,6 +74,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Resource'
+      tags:
+      - Add
   /v2/add/llmstxt:
     post:
       summary: Submit an llms.txt file
@@ -169,6 +93,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Resource'
+      tags:
+      - Add
   /v2/add/website:
     post:
       summary: Submit a website for crawling
@@ -186,6 +112,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Resource'
+      tags:
+      - Add
   /v2/add/confluence:
     post:
       summary: Submit a Confluence space
@@ -203,12 +131,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Resource'
+      tags:
+      - Add
 components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
   schemas:
     Resource:
       type: object
       additionalProperties: true
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

@@ -1,0 +1,55 @@
+openapi: 3.1.0
+info:
+  title: Context7 REST Add Policies API
+  version: '1.0'
+  description: REST endpoints for searching libraries, retrieving documentation snippets for LLMs, refreshing indexed sources, managing teamspace policies, and submitting new sources (GitHub repos, OpenAPI specs, llms.txt files, websites, Confluence spaces) to Context7.
+  x-generated-from: https://context7.com/docs/api-guide
+  x-generated-by: claude-crawl-2026-05-08
+servers:
+- url: https://context7.com/api
+  description: Context7 API
+security:
+- BearerAuth: []
+tags:
+- name: Policies
+paths:
+  /v2/policies:
+    get:
+      summary: Get teamspace policy configuration
+      operationId: getPolicies
+      responses:
+        '200':
+          description: Policy configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+      tags:
+      - Policies
+    patch:
+      summary: Update teamspace policies
+      operationId: updatePolicies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: Updated policy configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+      tags:
+      - Policies
+components:
+  schemas:
+    Resource:
+      type: object
+      additionalProperties: true
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
