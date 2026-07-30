@@ -6,9 +6,22 @@ description: >-
   and frameworks, exposed as both a REST API and a Model Context Protocol (MCP) server so AI coding assistants can fetch
   authoritative reference material at prompt time.
 kind: contract
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Consuming
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/context7.png
 tags:
   - AI
   - Context
@@ -19,65 +32,114 @@ created: '2026-03-16'
 modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-  - aid: context7:rest-api
-    name: Context7 REST API
-    tags:
-      - Documentation
-      - LLM
-      - REST
-      - Search
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://context7.com/api
-    humanURL: https://context7.com/docs/api-guide
-    properties:
-      - url: https://context7.com/docs/api-guide
-        type: Documentation
-      - url: https://context7.com/docs/llms.txt
-        type: LlmsText
-      - url: openapi/context7-openapi.yml
-        type: OpenAPI
-    description: >-
-      The Context7 REST API exposes endpoints for searching libraries, retrieving documentation context for LLMs,
-      refreshing indexed sources, and submitting new sources (GitHub repositories, OpenAPI specs, llms.txt files,
-      websites, and Confluence spaces). Endpoints span v1 and v2 paths under https://context7.com/api and use Bearer
-      token authentication with keys issued from the Context7 dashboard.
-  - aid: context7:mcp-server
-    name: Context7 MCP Server
-    tags:
-      - AI
-      - Context
-      - LLM
-      - MCP
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://mcp.context7.com/mcp
-    humanURL: https://github.com/upstash/context7
-    properties:
-      - url: https://github.com/upstash/context7
-        type: Documentation
-      - url: https://github.com/upstash/context7
-        type: GitHubRepository
-    description: >-
-      The Context7 MCP Server implements the Model Context Protocol so AI coding assistants such as Cursor, Claude, and
-      Windsurf can call Context7 tools directly from a developer's editor. It exposes resolve-library-id (mapping a
-      library name to a Context7-compatible identifier) and query-docs (returning documentation snippets for a given
-      library and query) and is hosted at https://mcp.context7.com/mcp with API key authentication.
-  - aid: context7:cli
-    name: Context7 CLI
-    tags:
-      - CLI
-      - Documentation
-      - Tooling
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://github.com/upstash/context7
-    properties:
-      - url: https://github.com/upstash/context7
-        type: Documentation
-      - url: https://github.com/upstash/context7
-        type: GitHubRepository
-    description: >-
-      The Context7 CLI (ctx7) is a command-line tool for querying the Context7 index from the terminal. It provides ctx7
-      library for searching the catalog by library name and ctx7 docs for retrieving documentation using a
-      Context7-compatible library ID, useful for scripting and local developer workflows.
+- aid: context7:mcp-server
+  name: Context7 MCP Server
+  tags:
+  - AI
+  - Context
+  - LLM
+  - MCP
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  baseURL: https://mcp.context7.com/mcp
+  humanURL: https://github.com/upstash/context7
+  properties:
+  - url: https://github.com/upstash/context7
+    type: Documentation
+  - url: https://github.com/upstash/context7
+    type: GitHubRepository
+  description: >-
+    The Context7 MCP Server implements the Model Context Protocol so AI coding assistants such as Cursor,
+    Claude, and Windsurf can call Context7 tools directly from a developer's editor. It exposes resolve-library-id
+    (mapping a library name to a Context7-compatible identifier) and query-docs (returning documentation
+    snippets for a given library and query) and is hosted at https://mcp.context7.com/mcp with API key
+    authentication.
+- aid: context7:cli
+  name: Context7 CLI
+  tags:
+  - CLI
+  - Documentation
+  - Tooling
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://github.com/upstash/context7
+  properties:
+  - url: https://github.com/upstash/context7
+    type: Documentation
+  - url: https://github.com/upstash/context7
+    type: GitHubRepository
+  description: >-
+    The Context7 CLI (ctx7) is a command-line tool for querying the Context7 index from the terminal.
+    It provides ctx7 library for searching the catalog by library name and ctx7 docs for retrieving documentation
+    using a Context7-compatible library ID, useful for scripting and local developer workflows.
+- aid: context7:context7-add-api
+  name: Context7 Add API
+  description: The Add API from Context7 — 6 operation(s) for add.
+  humanURL: https://context7.com/docs/api-guide
+  baseURL: https://context7.com/api
+  tags:
+  - Add
+  properties:
+  - type: OpenAPI
+    url: openapi/context7-add-api-openapi.yml
+  - type: Documentation
+    url: https://context7.com/docs/api-guide
+  - type: LlmsText
+    url: https://context7.com/docs/llms.txt
+- aid: context7:context7-context-api
+  name: Context7 Context API
+  description: The Context API from Context7 — 1 operation(s) for context.
+  humanURL: https://context7.com/docs/api-guide
+  baseURL: https://context7.com/api
+  tags:
+  - Context
+  properties:
+  - type: OpenAPI
+    url: openapi/context7-context-api-openapi.yml
+  - type: Documentation
+    url: https://context7.com/docs/api-guide
+  - type: LlmsText
+    url: https://context7.com/docs/llms.txt
+- aid: context7:context7-libs-api
+  name: Context7 Libs API
+  description: The Libs API from Context7 — 1 operation(s) for libs.
+  humanURL: https://context7.com/docs/api-guide
+  baseURL: https://context7.com/api
+  tags:
+  - Libs
+  properties:
+  - type: OpenAPI
+    url: openapi/context7-libs-api-openapi.yml
+  - type: Documentation
+    url: https://context7.com/docs/api-guide
+  - type: LlmsText
+    url: https://context7.com/docs/llms.txt
+- aid: context7:context7-policies-api
+  name: Context7 Policies API
+  description: The Policies API from Context7 — 1 operation(s) for policies.
+  humanURL: https://context7.com/docs/api-guide
+  baseURL: https://context7.com/api
+  tags:
+  - Policies
+  properties:
+  - type: OpenAPI
+    url: openapi/context7-policies-api-openapi.yml
+  - type: Documentation
+    url: https://context7.com/docs/api-guide
+  - type: LlmsText
+    url: https://context7.com/docs/llms.txt
+- aid: context7:context7-refresh-api
+  name: Context7 Refresh API
+  description: The Refresh API from Context7 — 1 operation(s) for refresh.
+  humanURL: https://context7.com/docs/api-guide
+  baseURL: https://context7.com/api
+  tags:
+  - Refresh
+  properties:
+  - type: OpenAPI
+    url: openapi/context7-refresh-api-openapi.yml
+  - type: Documentation
+    url: https://context7.com/docs/api-guide
+  - type: LlmsText
+    url: https://context7.com/docs/llms.txt
 common:
   - type: AgenticAccess
     url: agentic-access/context7-agentic-access.yml
