@@ -1,0 +1,22 @@
+{
+  "provider": "context7",
+  "sources": [
+    "context7-add-api-openapi.yml",
+    "context7-context-api-openapi.yml",
+    "context7-libs-api-openapi.yml",
+    "context7-policies-api-openapi.yml",
+    "context7-refresh-api-openapi.yml"
+  ],
+  "outputs": [
+    "context7-add-api-openapi.yml",
+    "context7-context-api-openapi.yml",
+    "context7-libs-api-openapi.yml",
+    "context7-policies-api-openapi.yml",
+    "context7-refresh-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
