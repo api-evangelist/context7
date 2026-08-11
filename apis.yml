@@ -141,6 +141,15 @@ apis:
   - type: LlmsText
     url: https://context7.com/docs/llms.txt
 common:
+  - type: IssueTracker
+    url: https://github.com/upstash/context7/issues
+  - type: Releases
+    url: https://github.com/upstash/context7/releases
+  - type: SecurityPolicy
+    url: https://github.com/upstash/context7/blob/master/SECURITY.md
+  - type: License
+    name: MIT
+    url: https://github.com/upstash/context7/blob/master/LICENSE
   - type: AgenticAccess
     url: agentic-access/context7-agentic-access.yml
   - type: VulnerabilityDisclosure
