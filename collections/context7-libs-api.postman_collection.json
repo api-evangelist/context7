@@ -1,0 +1,131 @@
+{
+  "item": [
+    {
+      "id": "c72894ff-9a4d-4eae-b213-f6ba67abbc7c",
+      "name": "Libs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2e0a6bf5-0a8d-40b8-a8d4-532d4e782cda",
+          "name": "Search libraries",
+          "request": {
+            "name": "Search libraries",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "libs",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "query",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4038dbe4-9e00-49da-ae51-3104d2d3e2c2",
+              "name": "Search results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "libs",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": 8876.28381965686,\n  \"key_1\": 1843,\n  \"key_2\": \"string\",\n  \"key_3\": 6263.9910136194985,\n  \"key_4\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://context7.com/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ab4ce12c-9e6f-4ddd-bf6e-680493719439",
+    "name": "Context7 REST Add Libs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "REST endpoints for searching libraries, retrieving documentation snippets for LLMs, refreshing indexed sources, managing teamspace policies, and submitting new sources (GitHub repos, OpenAPI specs, llms.txt files, websites, Confluence spaces) to Context7.",
+      "type": "text/plain"
+    }
+  }
+}

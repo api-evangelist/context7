@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Context7 REST Add Refresh API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Refresh",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Refresh a library's documentation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://context7.com/api/v1/refresh",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Refresh a library's documentation"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

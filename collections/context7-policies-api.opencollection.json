@@ -1,0 +1,50 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Context7 REST Add Policies API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get teamspace policy configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://context7.com/api/v2/policies"
+          },
+          "docs": "Get teamspace policy configuration"
+        },
+        {
+          "info": {
+            "name": "Update teamspace policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://context7.com/api/v2/policies",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update teamspace policies"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

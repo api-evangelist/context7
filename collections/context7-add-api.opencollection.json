@@ -1,0 +1,121 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Context7 REST Add API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Add",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Submit a repository for processing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://context7.com/api/v2/add/repo/:provider",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a repository for processing"
+        },
+        {
+          "info": {
+            "name": "Submit an OpenAPI specification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://context7.com/api/v2/add/openapi",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit an OpenAPI specification"
+        },
+        {
+          "info": {
+            "name": "Upload an OpenAPI specification file",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://context7.com/api/v2/add/openapi-upload",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload an OpenAPI specification file"
+        },
+        {
+          "info": {
+            "name": "Submit an llms.txt file",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://context7.com/api/v2/add/llmstxt",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit an llms.txt file"
+        },
+        {
+          "info": {
+            "name": "Submit a website for crawling",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://context7.com/api/v2/add/website",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a website for crawling"
+        },
+        {
+          "info": {
+            "name": "Submit a Confluence space",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://context7.com/api/v2/add/confluence",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a Confluence space"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

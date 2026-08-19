@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Context7 REST Add Context API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Context",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve documentation snippets for a library",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://context7.com/api/v2/context",
+            "params": [
+              {
+                "name": "libraryId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve documentation snippets for a library"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

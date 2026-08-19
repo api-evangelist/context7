@@ -1,0 +1,42 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Context7 REST Add Libs API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Libs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search libraries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://context7.com/api/v2/libs/search",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search libraries"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
