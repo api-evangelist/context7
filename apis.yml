@@ -23,6 +23,12 @@ position: Consuming
 access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/context7.png
 tags:
+  - Artificial Intelligence
+  - Context
+  - Documentation
+  - LLM
+  - MCP
+tags_raw:
   - AI
   - Context
   - Documentation
@@ -35,6 +41,11 @@ apis:
 - aid: context7:mcp-server
   name: Context7 MCP Server
   tags:
+  - Artificial Intelligence
+  - Context
+  - LLM
+  - MCP
+  tags_raw:
   - AI
   - Context
   - LLM
@@ -75,7 +86,8 @@ apis:
   description: The Add API from Context7 — 6 operation(s) for add.
   humanURL: https://context7.com/docs/api-guide
   baseURL: https://context7.com/api
-  tags:
+  tags: []
+  tags_raw:
   - Add
   properties:
   - type: OpenAPI
