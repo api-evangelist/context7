@@ -6,6 +6,20 @@ description: >-
   and frameworks, exposed as both a REST API and a Model Context Protocol (MCP) server so AI coding assistants can fetch
   authoritative reference material at prompt time.
 kind: contract
+deliveryModel:
+  model: open-core
+  license: MIT
+  open_source: true
+  commercial: true
+  callable_host: true
+  label: Open core · an OSS project plus a commercial hosted product
+  confidence: high
+  source:
+  - license
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
