@@ -1,11 +1,7 @@
 {
   "provider": "context7",
   "sources": [
-    "context7-add-api-openapi.yml",
-    "context7-context-api-openapi.yml",
-    "context7-libs-api-openapi.yml",
-    "context7-policies-api-openapi.yml",
-    "context7-refresh-api-openapi.yml"
+    "_ae-authored/context7-openapi.yml"
   ],
   "outputs": [
     "context7-add-api-openapi.yml",
@@ -17,6 +13,32 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "context7-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "context7-openapi.yml: tagged paths GET /v2/libs/search -> Libs",
+    "context7-openapi.yml: tagged paths GET /v2/context -> Context",
+    "context7-openapi.yml: tagged paths POST /v1/refresh -> Refresh",
+    "context7-openapi.yml: tagged paths GET /v2/policies -> Policies",
+    "context7-openapi.yml: tagged paths PATCH /v2/policies -> Policies",
+    "context7-openapi.yml: tagged paths POST /v2/add/repo/{provider} -> Add",
+    "context7-openapi.yml: tagged paths POST /v2/add/openapi -> Add",
+    "context7-openapi.yml: tagged paths POST /v2/add/openapi-upload -> Add",
+    "context7-openapi.yml: tagged paths POST /v2/add/llmstxt -> Add",
+    "context7-openapi.yml: tagged paths POST /v2/add/website -> Add",
+    "context7-openapi.yml: tagged paths POST /v2/add/confluence -> Add",
+    "context7-openapi.yml: declared missing tag: Add",
+    "context7-openapi.yml: declared missing tag: Context",
+    "context7-openapi.yml: declared missing tag: Libs",
+    "context7-openapi.yml: declared missing tag: Policies",
+    "context7-openapi.yml: declared missing tag: Refresh",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "context7-add-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "context7-context-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "context7-libs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "context7-policies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "context7-refresh-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

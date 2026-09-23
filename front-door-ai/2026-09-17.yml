@@ -1,0 +1,27 @@
+# Front Door AI Index — context7 — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: context7
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: context7.com
+  final_host: context7.com
+  ownership: own
+  owner: context7
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 6
+  host_score: 6
+  density: 89.55
+  words: 67
+  tiers:
+    agentic: 0
+    core: 4
+    model: 2
+  ambiguous: 0
+  top_terms:
+    AI: 3
+    Claude: 2
+    LLMs: 1
