@@ -1,0 +1,12 @@
+{
+ "url": "https://context7.com/openapi.json",
+ "final": "https://context7.com/openapi.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 126738,
+ "sha256": "9cd411db1f9ac9780a32420656b00c9085cba8b9024c2a63e6866e63bfd009b4",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

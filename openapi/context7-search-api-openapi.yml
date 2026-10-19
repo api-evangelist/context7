@@ -1,0 +1,669 @@
+openapi: 3.2.0
+info:
+  title: Context7 Public Search API
+  description: The Context7 Public API provides programmatic access to library documentation and search functionality. Get up-to-date documentation and code examples for any library.
+  version: 2.0.0
+  contact:
+    name: Context7 Support
+    url: https://context7.com
+    email: support@context7.com
+servers:
+- url: https://context7.com/api
+  description: Production server
+tags:
+- name: Search
+  description: Search for libraries in the Context7 database
+paths:
+  /v2/libs/search:
+    get:
+      summary: Search for libraries
+      description: Search for libraries by name with intelligent LLM-powered ranking based on your query context.
+      operationId: searchLibraries
+      tags:
+      - Search
+      parameters:
+      - $ref: '#/components/parameters/LibraryNameParam'
+      - $ref: '#/components/parameters/QueryParam'
+      - $ref: '#/components/parameters/FastParam'
+      responses:
+        '200':
+          description: Search results ranked by relevance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+              example:
+                results:
+                - id: /facebook/react
+                  title: React
+                  description: A JavaScript library for building user interfaces
+                  branch: main
+                  lastUpdateDate: '2025-01-15T10:30:00.000Z'
+                  state: finalized
+                  totalTokens: 500000
+                  totalSnippets: 2500
+                  stars: 220000
+                  trustScore: 10
+                  benchmarkScore: 95.5
+                  versions:
+                  - v18.2.0
+                  - v17.0.2
+                searchFilterApplied: false
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '402':
+          $ref: '#/components/responses/SpendingLimitError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailableError'
+      security:
+      - {}
+      - bearerAuth: []
+  /v3/search:
+    get:
+      summary: Search documentation in one request
+      description: Select up to four relevant Context7 libraries, retrieve their documentation in parallel, deduplicate and globally rerank the evidence, and return one bounded response. Optional library, version, and language values improve routing and ranking.
+      operationId: searchDocumentation
+      tags:
+      - Search
+      parameters:
+      - $ref: '#/components/parameters/SearchQueryParam'
+      - $ref: '#/components/parameters/TypeParam'
+      - name: library
+        in: query
+        description: Optional library hints. Repeat for up to four values; each may be a fuzzy product name such as `next.js` or an exact Context7 ID such as `/vercel/next.js`. An exact ID that is not indexed, or has no documentation to serve, is searched by its product name instead. A version-like tag (/vercel/next.js@15) is resolved like the version parameter for that library, including when the ID is searched by its product name.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          maxItems: 4
+          items:
+            type: string
+            minLength: 1
+            maxLength: 120
+        example:
+        - next.js
+        - react
+      - name: version
+        in: query
+        description: 'Optional version preference. `latest` (any case) is the same as no version. Without a library value, the version applies when the question names one product; when it names several, the version is ignored. With one library, verified matching documentation is preferred; if unavailable, the newest stable release of the requested line when it is newer than the request (v2.3.1 for 2.0.0; below 1.0, the same minor) or else current documentation is returned, and the response says so (X-Context7-Search-Status: partial with reason versionUnverified, X-Context7-Search-Version, and the version field of JSON responses). A prerelease tag serves only a request for that prerelease. With multiple libraries, the version is a preference and each returned library reports what it served. A version-like tag on a library value (/vercel/next.js@15) is the same request scoped to that library. A version that is not indexed for a public GitHub library is queued for indexing in the background, so a later request for it can be answered.'
+        required: false
+        schema:
+          type: string
+          pattern: ^([Ll][Aa][Tt][Ee][Ss][Tt]|[Vv]?[0-9]+([._][0-9]+){0,2}([-+][a-zA-Z0-9.-]+)?)$
+        example: '15.2'
+      - name: language
+        in: query
+        description: Optional programming-language preference used for library selection, retrieval, and reranking. This is a soft preference and does not exclude language-neutral documentation.
+        required: false
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 40
+        example: TypeScript
+      responses:
+        '200':
+          description: Bounded documentation evidence from the selected libraries
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchContextResponse'
+          headers:
+            X-Context7-Search-Status:
+              description: Present with value partial when successful results are returned after an operational search failure or reranker fallback, or when a requested version could not be served as asked. This is not a relevance score.
+              schema:
+                type: string
+                enum:
+                - partial
+            X-Context7-Search-Reason:
+              description: 'Reason for partial results. Present with X-Context7-Search-Status. partialSearchFailure: an operational failure or reranker fallback. versionUnverified: at least one returned library has no documentation indexed for the requested version, so the newest stable release of that line or current documentation is served.'
+              schema:
+                type: string
+                enum:
+                - partialSearchFailure
+                - versionUnverified
+            X-Context7-Search-Version:
+              description: 'Present when a version was requested. The worst outcome across returned libraries: verified or unverified. The JSON version field carries the per-library detail.'
+              schema:
+                type: string
+                enum:
+                - verified
+                - unverified
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '402':
+          $ref: '#/components/responses/SpendingLimitError'
+        '404':
+          description: No documentation matched the question or library hints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: no_documentation_found
+                message: No documentation library matched the request. Check the library hint or name.
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '503':
+          description: Documentation search could not be completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: search_failed
+                message: The documentation search could not be completed.
+      security:
+      - {}
+      - bearerAuth: []
+components:
+  schemas:
+    Error:
+      type: object
+      description: Standard error response
+      properties:
+        error:
+          type: string
+          description: Error code identifier
+        message:
+          type: string
+          description: Human-readable error message
+      required:
+      - error
+      - message
+    SearchResponse:
+      type: object
+      description: Search results response
+      properties:
+        results:
+          type: array
+          description: Array of matching libraries ranked by relevance
+          items:
+            $ref: '#/components/schemas/Library'
+        searchFilterApplied:
+          type: boolean
+          description: Indicates whether the search results were filtered by the teamspace's public library access settings. When true, some libraries may be excluded from results based on the teamspace's configuration (e.g., only verified libraries, selected libraries, or private repos only).
+      required:
+      - results
+      - searchFilterApplied
+    Library:
+      type: object
+      description: Library metadata
+      properties:
+        id:
+          type: string
+          description: Library ID — the URL path of the library on context7.com. `/owner/repo` for GitHub repositories, or `/<source>/<id>` for other sources (e.g., `/vercel/next.js`, `/websites/uploadcare_com`). See [Library ID format](/api-guide#library-id-format).
+          example: /vercel/next.js
+        title:
+          type: string
+          description: Display name of the library
+          example: Next.js
+        description:
+          type: string
+          description: Short description
+          example: The React Framework
+        branch:
+          type: string
+          description: Git branch being tracked
+          example: canary
+        lastUpdateDate:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of last update
+          example: '2025-01-15T10:30:00.000Z'
+        state:
+          type: string
+          enum:
+          - finalized
+          - initial
+          - processing
+          - error
+          - delete
+          description: Processing state of the library
+          example: finalized
+        totalTokens:
+          type: integer
+          description: Total tokens in documentation
+          example: 607822
+        totalSnippets:
+          type: integer
+          description: Number of code snippets
+          example: 3629
+        stars:
+          type: integer
+          description: GitHub stars count
+          example: 131745
+        trustScore:
+          type: integer
+          description: Source reputation score (0-10)
+          minimum: 0
+          maximum: 10
+          example: 10
+        benchmarkScore:
+          type: number
+          description: Quality indicator score (0-100)
+          minimum: 0
+          maximum: 100
+          example: 95.5
+        versions:
+          type: array
+          description: Available version tags
+          items:
+            type: string
+          example:
+          - v15.1.8
+          - v14.3.0
+    SearchInfoSnippet:
+      allOf:
+      - $ref: '#/components/schemas/InfoSnippet'
+      - type: object
+        properties:
+          libraryId:
+            type: string
+            description: Context7 library ID that produced this snippet
+        required:
+        - libraryId
+    ContextResponse:
+      type: object
+      description: Documentation context response
+      properties:
+        codeSnippets:
+          type: array
+          description: Relevant code snippets
+          items:
+            $ref: '#/components/schemas/CodeSnippet'
+        infoSnippets:
+          type: array
+          description: Relevant documentation snippets
+          items:
+            $ref: '#/components/schemas/InfoSnippet'
+        rules:
+          type: object
+          description: Optional library-specific rules and guidelines
+          properties:
+            global:
+              type: array
+              description: Global team rules
+              items:
+                type: string
+            libraryOwn:
+              type: array
+              description: Rules defined by the library owner
+              items:
+                type: string
+            libraryTeam:
+              type: array
+              description: Library-specific rules from the team
+              items:
+                type: string
+      required:
+      - codeSnippets
+      - infoSnippets
+    CodeSnippet:
+      type: object
+      description: A code snippet from library documentation
+      properties:
+        codeTitle:
+          type: string
+          description: Title of the code snippet
+        codeDescription:
+          type: string
+          description: Description of what the code does
+        codeLanguage:
+          type: string
+          description: Primary programming language
+        codeTokens:
+          type: integer
+          description: Token count for the snippet
+        codeId:
+          type: string
+          description: URL to source location
+        pageTitle:
+          type: string
+          description: Title of the documentation page
+        codeList:
+          type: array
+          description: Code examples in different languages
+          items:
+            $ref: '#/components/schemas/CodeExample'
+        isDynamic:
+          type: boolean
+          description: Whether this snippet was recovered from the dynamic source-code index instead of the primary docs index
+        sourceFile:
+          type: string
+          description: Repo-relative source file path for dynamic snippets
+      required:
+      - codeTitle
+      - codeDescription
+      - codeLanguage
+      - codeTokens
+      - codeId
+      - pageTitle
+      - codeList
+    SearchCodeSnippet:
+      allOf:
+      - $ref: '#/components/schemas/CodeSnippet'
+      - type: object
+        properties:
+          libraryId:
+            type: string
+            description: Context7 library ID that produced this snippet
+        required:
+        - libraryId
+    SearchContextResponse:
+      allOf:
+      - $ref: '#/components/schemas/ContextResponse'
+      - type: object
+        properties:
+          codeSnippets:
+            type: array
+            description: Relevant code snippets with their selected library
+            items:
+              $ref: '#/components/schemas/SearchCodeSnippet'
+          infoSnippets:
+            type: array
+            description: Relevant documentation snippets with their selected library
+            items:
+              $ref: '#/components/schemas/SearchInfoSnippet'
+          rules:
+            type: object
+            description: Optional global rules and library-scoped guidelines
+            properties:
+              global:
+                type: array
+                description: Global team rules that apply to every returned library
+                items:
+                  type: string
+              libraries:
+                type: array
+                description: Rules scoped to a specific returned library
+                items:
+                  type: object
+                  properties:
+                    libraryId:
+                      type: string
+                    libraryOwn:
+                      type: array
+                      items:
+                        type: string
+                    libraryTeam:
+                      type: array
+                      items:
+                        type: string
+                  required:
+                  - libraryId
+                  - libraryOwn
+                  - libraryTeam
+          version:
+            type: object
+            description: Present when a version was requested by the version parameter or a version-like library tag. Says what each returned library served.
+            required:
+            - status
+            - libraries
+            properties:
+              requested:
+                type: string
+                description: The version parameter, when given.
+                example: '15'
+              status:
+                type: string
+                enum:
+                - verified
+                - unverified
+                description: Worst outcome across the returned libraries.
+              libraries:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - libraryId
+                  - requested
+                  - served
+                  - status
+                  properties:
+                    libraryId:
+                      type: string
+                      description: The library id as it appears on the returned snippets, including the served tag when one was matched.
+                      example: /vercel/next.js/v15.1.11
+                    requested:
+                      type: string
+                      description: The version requested for this library.
+                      example: '15'
+                    served:
+                      type:
+                      - string
+                      - 'null'
+                      description: 'The indexed tag served: the matching tag or, when unverified, the newest stable release of the requested line that is newer than the request. The requested version when the source id pins it. Null when current documentation was served instead.'
+                      example: v15.1.11
+                    status:
+                      type: string
+                      enum:
+                      - verified
+                      - unverified
+    InfoSnippet:
+      type: object
+      description: A documentation snippet
+      properties:
+        pageId:
+          type: string
+          description: URL to source page
+        breadcrumb:
+          type: string
+          description: Navigation breadcrumb path
+        content:
+          type: string
+          description: The documentation content
+        contentTokens:
+          type: integer
+          description: Token count for the content
+      required:
+      - content
+      - contentTokens
+    CodeExample:
+      type: object
+      description: A single code example
+      properties:
+        language:
+          type: string
+          description: Programming language
+        code:
+          type: string
+          description: The actual code content
+      required:
+      - language
+      - code
+  responses:
+    BadRequestError:
+      description: Bad Request - Invalid input parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            validationError:
+              summary: Validation error
+              value:
+                error: validation_error
+                message: Library name is required
+            invalidLibraryId:
+              summary: Invalid library ID format
+              value:
+                error: invalid_library_id
+                message: 'Invalid library ID format. Expected: `/owner/repo` for GitHub repositories, or `/<source>/<id>` for other sources (the URL path of the library on context7.com)'
+    RateLimitError:
+      description: Too Many Requests - Rate limit exceeded
+      headers:
+        Retry-After:
+          description: Seconds until rate limit resets
+          schema:
+            type: integer
+        RateLimit-Limit:
+          description: Request limit
+          schema:
+            type: integer
+        RateLimit-Remaining:
+          description: Remaining requests
+          schema:
+            type: integer
+        RateLimit-Reset:
+          description: Unix timestamp when limit resets
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: rate_limit_exceeded
+            message: Rate limit exceeded. Please try again later.
+    ServiceUnavailableError:
+      description: Service Unavailable - Search service is temporarily unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: search_failed
+            message: 'Search failed: Service temporarily unavailable'
+    NotFoundError:
+      description: Not Found - Resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            libraryNotFound:
+              summary: Library not found
+              value:
+                error: library_not_found
+                message: Library "/owner/repo" not found. Please check the library ID or your access permissions.
+            versionNotFound:
+              summary: Version not found
+              value:
+                error: version_not_found
+                message: 'Version "v1.0.0" not found for library "/owner/repo". Available versions: v2.0.0, v1.5.0'
+            noSnippetsFound:
+              summary: No snippets found
+              value:
+                error: no_snippets_found
+                message: Could not fetch documentation snippets from the library.
+            noRelevantSnippets:
+              summary: No snippets matched the query
+              value:
+                error: no_relevant_snippets
+                message: No documentation in "/owner/repo" matched this query. Try a more specific query with different terms, or search for another library that covers this topic.
+            teamNotFound:
+              summary: Team not found
+              value:
+                error: team_not_found
+                message: Team not found or access denied
+            userNotFound:
+              summary: User not found
+              value:
+                error: user_not_found
+                message: User not found
+            noLibrariesFound:
+              summary: No libraries matched search query
+              value:
+                error: no_libraries_found
+                message: No libraries found for "nonexistent-lib". Try a different search term.
+    SpendingLimitError:
+      description: Payment Required - the teamspace's configured monthly spending limit has been reached. A teamspace owner or admin can raise the limit in billing settings, or the cap will reset at the start of the next billing month.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: spending_limit_exceeded
+            message: Monthly spending limit of $5.00 reached for this teamspace. An owner or admin can raise the limit at https://context7.com/dashboard/billing, or the cap will reset at the start of next month.
+    UnauthorizedError:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: invalid_api_key
+            message: Invalid API key. Please check your API key. API keys should start with 'ctx7sk' prefix.
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: internal_error
+            message: An error occurred while processing your request
+  parameters:
+    LibraryNameParam:
+      name: libraryName
+      in: query
+      description: Library name to search for (e.g., 'react', 'nextjs', 'express')
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 500
+      example: react
+    QueryParam:
+      name: query
+      in: query
+      description: User's original question or task - used for intelligent relevance ranking
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 500
+      example: How to manage state with hooks
+    TypeParam:
+      name: type
+      in: query
+      description: Response format type
+      required: false
+      schema:
+        type: string
+        enum:
+        - json
+        - txt
+        default: txt
+      example: json
+    SearchQueryParam:
+      name: query
+      in: query
+      description: The question or task to search documentation for. Long questions and pasted error output are accepted.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 2000
+      example: How do I write optimistic updates with TanStack Query v5?
+    FastParam:
+      name: fast
+      in: query
+      description: When `true`, skip LLM reranking and return top vector-search results directly. Trades relevance quality for lower latency.
+      required: false
+      schema:
+        type: string
+        enum:
+        - 'true'
+        - 'false'
+        default: 'false'
+      example: 'true'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Get your API key at [context7.com/dashboard](https://context7.com/dashboard). Treat your API key like a password and store it securely.

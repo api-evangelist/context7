@@ -1,0 +1,99 @@
+openapi: 3.2.0
+info:
+  title: Context7 Public Ask API
+  description: The Context7 Public API provides programmatic access to library documentation and search functionality. Get up-to-date documentation and code examples for any library.
+  version: 2.0.0
+  contact:
+    name: Context7 Support
+    url: https://context7.com
+    email: support@context7.com
+servers:
+- url: https://context7.com/api
+  description: Production server
+tags:
+- name: Ask
+  description: Answer questions from a website registered with Context7 Ask
+paths:
+  /v2/ask:
+    get:
+      summary: Ask a registered website
+      description: Answer a question from the pages of one website registered with Context7 Ask. AI agents find this endpoint in the hidden note, llms.txt section or Link header the site publishes. No API key is needed. Without `query`, the endpoint returns a short description of itself.
+      operationId: askSite
+      tags:
+      - Ask
+      parameters:
+      - name: siteKey
+        in: query
+        required: true
+        description: The site's public key, shown in the Context7 Ask dashboard.
+        schema:
+          type: string
+          example: ask_4f9c2e81a7b3d6e05c1f8a92
+      - name: query
+        in: query
+        required: false
+        description: The question, URL-encoded.
+        schema:
+          type: string
+          example: How do I retry webhooks?
+      responses:
+        '200':
+          description: Documentation from the site that answers the question, with a source link for each part. If nothing matches, the text says so.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '202':
+          description: The site is still being read. Try again later.
+          content:
+            text/plain:
+              schema:
+                type: string
+          headers:
+            Retry-After:
+              description: Seconds to wait before trying again.
+              schema:
+                type: integer
+        '400':
+          description: The site key or the question is not valid.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: No site is published for that key.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '429':
+          description: Too many requests for this site.
+          content:
+            text/plain:
+              schema:
+                type: string
+          headers:
+            Retry-After:
+              description: Seconds to wait before trying again.
+              schema:
+                type: integer
+        '500':
+          description: The question could not be answered.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '503':
+          description: The site's documentation is not available.
+          content:
+            text/plain:
+              schema:
+                type: string
+      security:
+      - {}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Get your API key at [context7.com/dashboard](https://context7.com/dashboard). Treat your API key like a password and store it securely.

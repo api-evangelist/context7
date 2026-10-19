@@ -167,6 +167,56 @@ apis:
     url: https://context7.com/docs/api-guide
   - type: LlmsText
     url: https://context7.com/docs/llms.txt
+- aid: context7:context7-add-library-api
+  name: Context7 Add Library API
+  description: Submit new libraries for documentation processing
+  humanURL: https://github.com/upstash/context7
+  baseURL: https://mcp.context7.com/mcp
+  tags:
+  - Add Library
+  properties:
+  - type: OpenAPI
+    url: openapi/context7-add-library-api-openapi.yml
+- aid: context7:context7-ask-api
+  name: Context7 Ask API
+  description: Answer questions from a website registered with Context7 Ask
+  humanURL: https://github.com/upstash/context7
+  baseURL: https://mcp.context7.com/mcp
+  tags:
+  - Ask
+  properties:
+  - type: OpenAPI
+    url: openapi/context7-ask-api-openapi.yml
+- aid: context7:context7-metrics-api
+  name: Context7 Metrics API
+  description: Retrieve usage metrics for libraries
+  humanURL: https://github.com/upstash/context7
+  baseURL: https://mcp.context7.com/mcp
+  tags:
+  - Metrics
+  properties:
+  - type: OpenAPI
+    url: openapi/context7-metrics-api-openapi.yml
+- aid: context7:context7-search-api
+  name: Context7 Search API
+  description: Search for libraries in the Context7 database
+  humanURL: https://github.com/upstash/context7
+  baseURL: https://mcp.context7.com/mcp
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/context7-search-api-openapi.yml
+- aid: context7:context7-usage-api
+  name: Context7 Usage API
+  description: See member and teamspace API usage
+  humanURL: https://github.com/upstash/context7
+  baseURL: https://mcp.context7.com/mcp
+  tags:
+  - Usage
+  properties:
+  - type: OpenAPI
+    url: openapi/context7-usage-api-openapi.yml
 common:
   - type: Plans
     url: plans/context7-plans-pricing.yml

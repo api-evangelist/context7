@@ -1,20 +1,27 @@
 {
   "provider": "context7",
   "sources": [
+    "_original/context7-openapi.json",
     "_ae-authored/context7-openapi.yml"
   ],
   "outputs": [
-    "context7-add-api-openapi.yml",
+    "context7-add-library-api-openapi.yml",
+    "context7-ask-api-openapi.yml",
     "context7-context-api-openapi.yml",
-    "context7-libs-api-openapi.yml",
+    "context7-metrics-api-openapi.yml",
     "context7-policies-api-openapi.yml",
-    "context7-refresh-api-openapi.yml"
+    "context7-refresh-api-openapi.yml",
+    "context7-search-api-openapi.yml",
+    "context7-usage-api-openapi.yml",
+    "context7-add-api-openapi.yml",
+    "context7-libs-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
-    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "context7-openapi.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "context7-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "context7-openapi.yml: tagged paths GET /v2/libs/search -> Libs",
     "context7-openapi.yml: tagged paths GET /v2/context -> Context",
@@ -32,7 +39,10 @@
     "context7-openapi.yml: declared missing tag: Libs",
     "context7-openapi.yml: declared missing tag: Policies",
     "context7-openapi.yml: declared missing tag: Refresh",
-    "apis.yml register: already-registered"
+    "tag 'Context' spans 2 source specs (context7-openapi.json, context7-openapi.yml): per-path servers applied",
+    "tag 'Policies' spans 2 source specs (context7-openapi.json, context7-openapi.yml): per-path servers applied",
+    "tag 'Refresh' spans 2 source specs (context7-openapi.json, context7-openapi.yml): per-path servers applied",
+    "apis.yml register: written (+5 apis, 12 total)"
   ],
   "skipped": [
     "context7-add-api-openapi.yml: previously refined output, superseded by openapi/_original/",

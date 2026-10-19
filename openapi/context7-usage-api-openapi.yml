@@ -1,0 +1,254 @@
+openapi: 3.2.0
+info:
+  title: Context7 Public Usage API
+  description: The Context7 Public API provides programmatic access to library documentation and search functionality. Get up-to-date documentation and code examples for any library.
+  version: 2.0.0
+  contact:
+    name: Context7 Support
+    url: https://context7.com
+    email: support@context7.com
+servers:
+- url: https://context7.com/api
+  description: Production server
+tags:
+- name: Usage
+  description: See member and teamspace API usage
+paths:
+  /v2/usage:
+    get:
+      summary: Get API usage
+      description: See your requests this month, what extra requests cost your teamspace, and the teamspace's requests per day. `member` is the member who owns the API key and has the same numbers as the `RateLimit-*` headers on search and docs responses. `teamspace` covers all members. Calls to this endpoint do not count as requests.
+      operationId: getUsage
+      tags:
+      - Usage
+      parameters:
+      - name: days
+        in: query
+        required: false
+        description: Number of days in `teamspace.daily`, ending today (UTC). Free plans return at most the last 10 days.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 90
+          default: 30
+      responses:
+        '200':
+          description: Usage for the current month and the requested days
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageResponse'
+              examples:
+                pro:
+                  summary: Pro plan, one member past the included requests
+                  value:
+                    plan: pro
+                    usageResetsAt: '2026-11-01T00:00:00.000Z'
+                    member:
+                      requests: 2340
+                      includedInPlan: 2000
+                    teamspace:
+                      extraRequests: 340
+                      extraCostUsd: 1.7
+                      spendingLimitUsd: 50
+                      daily:
+                      - date: '2026-10-03'
+                        requests: 530
+                        searchRequests: 120
+                        docsRequests: 410
+                        extraCostUsd: 0.9
+                      - date: '2026-10-04'
+                        requests: 463
+                        searchRequests: 98
+                        docsRequests: 365
+                        extraCostUsd: 0.8
+                free:
+                  summary: Free plan
+                  value:
+                    plan: free
+                    usageResetsAt: '2026-11-01T00:00:00.000Z'
+                    member:
+                      requests: 412
+                      includedInPlan: 1000
+                    teamspace:
+                      extraRequests: 0
+                      extraCostUsd: 0
+                      spendingLimitUsd: null
+                      daily:
+                      - date: '2026-10-04'
+                        requests: 37
+                        searchRequests: 12
+                        docsRequests: 25
+                        extraCostUsd: 0
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    Error:
+      type: object
+      description: Standard error response
+      properties:
+        error:
+          type: string
+          description: Error code identifier
+        message:
+          type: string
+          description: Human-readable error message
+      required:
+      - error
+      - message
+    UsageResponse:
+      type: object
+      properties:
+        plan:
+          type: string
+          enum:
+          - free
+          - pro
+          - enterprise
+          - payg
+          description: Plan of the teamspace the API key belongs to. `payg` (pay-as-you-go) includes no requests and bills every request.
+        usageResetsAt:
+          type: string
+          format: date-time
+          description: 'When the monthly numbers in `member` and `teamspace` start again from zero: the first day of next month, UTC. `teamspace.daily` keeps its history.'
+        member:
+          type: object
+          description: The member who owns the API key, this month. Each member has their own included requests. On the Free plan, the member's requests stop with a 429 when `requests` reaches `includedInPlan`. On paid plans and `payg`, they continue and count as `teamspace.extraRequests`.
+          properties:
+            requests:
+              type: integer
+              description: Search and docs requests this member made this month
+            includedInPlan:
+              type: integer
+              description: Requests the plan includes for this member each month. 0 on `payg`.
+          required:
+          - requests
+          - includedInPlan
+        teamspace:
+          type: object
+          description: All members of the teamspace together. To get the teamspace's requests for a period, add up `daily`.
+          properties:
+            extraRequests:
+              type: integer
+              description: Requests this month beyond each member's `includedInPlan`. Always 0 on the Free plan.
+            extraCostUsd:
+              type: number
+              description: Cost of `extraRequests` in US dollars, as it will appear on the invoice. Always 0 on the Free plan.
+            spendingLimitUsd:
+              type:
+              - number
+              - 'null'
+              description: Monthly limit for `extraCostUsd` in US dollars. When `extraCostUsd` reaches it, search and docs requests return 402 until `resetsAt`. `null` if no limit is set.
+            daily:
+              type: array
+              description: Requests of all members per UTC day, oldest first, with the cost of that day's extra requests. Every day is present; days without requests are 0.
+              items:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date
+                  requests:
+                    type: integer
+                    description: All requests on this day (`searchRequests` + `docsRequests`)
+                  searchRequests:
+                    type: integer
+                    description: Library search requests
+                  docsRequests:
+                    type: integer
+                    description: Documentation and context requests
+                  extraCostUsd:
+                    type: number
+                    description: Cost of this day's extra requests in US dollars. The days of the current month add up to `teamspace.extraCostUsd`. Always 0 on the Free plan.
+                required:
+                - date
+                - requests
+                - searchRequests
+                - docsRequests
+                - extraCostUsd
+          required:
+          - extraRequests
+          - extraCostUsd
+          - spendingLimitUsd
+          - daily
+      required:
+      - plan
+      - usageResetsAt
+      - member
+      - teamspace
+  responses:
+    BadRequestError:
+      description: Bad Request - Invalid input parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            validationError:
+              summary: Validation error
+              value:
+                error: validation_error
+                message: Library name is required
+            invalidLibraryId:
+              summary: Invalid library ID format
+              value:
+                error: invalid_library_id
+                message: 'Invalid library ID format. Expected: `/owner/repo` for GitHub repositories, or `/<source>/<id>` for other sources (the URL path of the library on context7.com)'
+    UnauthorizedError:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: invalid_api_key
+            message: Invalid API key. Please check your API key. API keys should start with 'ctx7sk' prefix.
+    RateLimitError:
+      description: Too Many Requests - Rate limit exceeded
+      headers:
+        Retry-After:
+          description: Seconds until rate limit resets
+          schema:
+            type: integer
+        RateLimit-Limit:
+          description: Request limit
+          schema:
+            type: integer
+        RateLimit-Remaining:
+          description: Remaining requests
+          schema:
+            type: integer
+        RateLimit-Reset:
+          description: Unix timestamp when limit resets
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: rate_limit_exceeded
+            message: Rate limit exceeded. Please try again later.
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: internal_error
+            message: An error occurred while processing your request
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Get your API key at [context7.com/dashboard](https://context7.com/dashboard). Treat your API key like a password and store it securely.
