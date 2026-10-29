@@ -1,4 +1,4 @@
-# Context7 (context7)
+# Context7
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,101 +66,136 @@
 
 Context7 is an Upstash service providing up-to-date, version-specific documentation and code examples for libraries and frameworks, exposed as both a REST API and a Model Context Protocol (MCP) server so AI coding assistants can fetch authoritative reference material at prompt time.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/context7/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/context7/refs/heads/main/apis.yml)
+**Areas:** Artificial Intelligence · Context · Documentation · LLM · MCP
 
-## Scope
+## Context7 on APIs.io
 
-- **Position:** Consuming
-- **Access:** 3rd-Party
+Everything profiled for Context7 is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/context7/](https://apis.io/providers/context7/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (7)
 
-- AI
-- Context
-- Documentation
-- LLM
-- MCP
+- [Context7 MCP Server](https://apis.io/apis/context7/mcp-server/) — The Context7 MCP Server implements the Model Context Protocol so AI coding assistants such as Cursor, Claude, and Windsurf can call Context7 tools directly…
+- [Context7 CLI](https://apis.io/apis/context7/cli/) — The Context7 CLI (ctx7) is a command-line tool for querying the Context7 index from the terminal. It provides ctx7 library for searching the catalog by…
+- [Context7 Add API](https://apis.io/apis/context7/context7-add-api/) — The Add API from Context7 — 6 operation(s) for add.
+- [Context7 Context API](https://apis.io/apis/context7/context7-context-api/) — The Context API from Context7 — 1 operation(s) for context.
+- [Context7 Libs API](https://apis.io/apis/context7/context7-libs-api/) — The Libs API from Context7 — 1 operation(s) for libs.
+- [Context7 Policies API](https://apis.io/apis/context7/context7-policies-api/) — The Policies API from Context7 — 1 operation(s) for policies.
+- [Context7 Refresh API](https://apis.io/apis/context7/context7-refresh-api/) — The Refresh API from Context7 — 1 operation(s) for refresh.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-03-16
-- **Modified:** 2026-05-19
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### MCP servers (1)
 
-### Context7 REST API
+Model Context Protocol servers that expose the API to agents.
 
-The Context7 REST API exposes endpoints for searching libraries, retrieving documentation context for LLMs, refreshing indexed sources, and submitting new sources (GitHub repositories, OpenAPI specs, llms.txt files, websites, and Confluence spaces). Endpoints span v1 and v2 paths under https://context7.com/api and use Bearer token authentication with keys issued from the Context7 dashboard.
+- [context7](https://apis.io/servers/context7/context7/)
 
-- **Human URL:** [https://context7.com/docs/api-guide](https://context7.com/docs/api-guide)
-- **Base URL:** `https://context7.com/api`
+#### Agentic access (1)
 
-#### Tags
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- Documentation
-- LLM
-- REST
-- Search
+- [Context7 Agentic Access](https://apis.io/agentic-access/context7/context7-agentic-access/)
 
-#### Properties
+#### Collections (6)
 
-- [Documentation](https://context7.com/docs/api-guide)
-- [L L Ms Txt](https://context7.com/docs/llms.txt)
-- [OpenAPI](openapi/context7-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/context7.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/context7.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Postman and Open Collection request collections.
 
-### Context7 MCP Server
+- [Context7 REST API](https://apis.io/collections/context7/open-context7/)
+- [Context7 REST Add API](https://apis.io/collections/context7/open-context7-add-api/)
+- [Context7 REST Add Context API](https://apis.io/collections/context7/open-context7-context-api/)
+- [Context7 REST Add Libs API](https://apis.io/collections/context7/open-context7-libs-api/)
+- [Context7 REST Add Policies API](https://apis.io/collections/context7/open-context7-policies-api/)
+- [Context7 REST Add Refresh API](https://apis.io/collections/context7/open-context7-refresh-api/)
 
-The Context7 MCP Server implements the Model Context Protocol so AI coding assistants such as Cursor, Claude, and Windsurf can call Context7 tools directly from a developer's editor. It exposes resolve-library-id (mapping a library name to a Context7-compatible identifier) and query-docs (returning documentation snippets for a given library and query) and is hosted at https://mcp.context7.com/mcp with API key authentication.
+#### Security (3)
 
-- **Human URL:** [https://github.com/upstash/context7](https://github.com/upstash/context7)
-- **Base URL:** `https://mcp.context7.com/mcp`
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Tags
+- [Context7 Authentication](https://apis.io/security/context7/context7-authentication/)
+- [Context7 Domain Security](https://apis.io/security/context7/context7-domain-security/)
+- [Context7 Vulnerability Disclosure](https://apis.io/security/context7/context7-vulnerability-disclosure/)
 
-- AI
-- Context
-- LLM
-- MCP
+#### Plans and pricing (1)
 
-#### Properties
+Published plans, tiers and prices.
 
-- [Documentation](https://github.com/upstash/context7)
-- [GitHub Repository](https://github.com/upstash/context7)
-- [Postman Collection](collections/context7.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/context7.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Context7 Plans Pricing](https://apis.io/plans/context7/context7-plans-pricing/)
 
-### Context7 CLI
+#### Rate limits (1)
 
-The Context7 CLI (ctx7) is a command-line tool for querying the Context7 index from the terminal. It provides ctx7 library for searching the catalog by library name and ctx7 docs for retrieving documentation using a Context7-compatible library ID, useful for scripting and local developer workflows.
+Published request limits.
 
-- **Human URL:** [https://github.com/upstash/context7](https://github.com/upstash/context7)
+- [Context7 Rate Limits](https://apis.io/rate-limits/context7/context7-rate-limits/)
 
-#### Tags
+#### FinOps (1)
 
-- CLI
-- Documentation
-- Tooling
+What the API costs to run, by operation.
 
-#### Properties
+- [Context7 Finops](https://apis.io/finops/context7/context7-finops/)
 
-- [Documentation](https://github.com/upstash/context7)
-- [GitHub Repository](https://github.com/upstash/context7)
-- [Postman Collection](collections/context7.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/context7.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+## Where to find this API
 
-## Common Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://context7.com/)
 - [Documentation](https://context7.com/docs)
-- [Dashboard](https://context7.com/dashboard)
-- [GitHub Organization](https://github.com/upstash)
-- [GitHub Repository](https://github.com/upstash/context7)
 - [Pricing](https://context7.com/pricing)
-- [Integrations](https://context7.com/integrations)
+- [Blog](https://context7.com/blog)
+- [GitHub](https://github.com/upstash)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 31.6** — thin · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.7 |
+| Contract quality | 42.9 |
+| Contract governance | 0.0 |
+| Operational transparency | 36.8 |
+| Developer ergonomics | 23.8 |
+| Access clarity | 7.9 |
+
+**Agent readiness 28.1** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 16.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/context7/](https://apis.io/providers/context7/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Context7: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/context7/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
